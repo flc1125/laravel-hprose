@@ -1,0 +1,32 @@
+<?php
+
+namespace App\Providers;
+
+use Flc\Laravel\Hprose\RouteServiceProvider as ServiceProvider;
+use Flc\Laravel\Hprose\Facades\HproseRoute;
+
+/**
+ * Hprose Route 服务提供者
+ *
+ * @author Flc
+ */
+class HproseRouteServiceProvider extends ServiceProvider
+{
+
+    /**
+     * 命名空间路径
+     *
+     * @var string|null
+     */
+    protected $namespace = 'App\\Http\\Controllers\\Hprose';
+
+    /**
+     * 载入路由
+     *
+     * @return void
+     */
+    public function map()
+    {
+        HproseRoute::group(['namespace' => $this->namespace], base_path('routes/hprose.php'));
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "name": "flc/laravel-hprose",
+    "description": "Laravel Hprose RPC 服务",
+    "require": {
+        "hprose/hprose-swoole": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Flc\\Laravel\\Hprose\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Examples\\": "examples/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Flc\\Laravel\\Hprose\\HproseServiceProvider"
+            ],
+            "aliases": {
+                "HproseServer": "Flc\\Laravel\\Hprose\\Facades\\HproseServer",
+                "HproseRoute": "Flc\\Laravel\\Hprose\\Facades\\HproseRoute",
+                "HproseClient": "Flc\\Laravel\\Hprose\\Facades\\HproseClient"
+            }
+        }
+    }
+}

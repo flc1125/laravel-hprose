@@ -1,0 +1,14 @@
+<?php
+
+/*
+|--------------------------------------------------------------------------
+| Hprose Routes File
+|--------------------------------------------------------------------------
+|
+| example:
+|       HproseRoute::add('hello', 'TestsController@hello');
+|       HproseRoute::group(['prefix' => 'tests', 'namespace' => 'Admin'], function ($router) {
+|           $router->add('hello', 'TestsController@hello');
+|       });
+|
+*/
