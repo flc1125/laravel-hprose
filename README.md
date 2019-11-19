@@ -71,7 +71,7 @@ php artisan hprose:generator
 
     ...
 
-    app\Providers\HproseRouteServiceProvider::class,
+    App\Providers\HproseRouteServiceProvider::class,
 ]
 ```
 
