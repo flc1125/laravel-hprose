@@ -7,6 +7,26 @@ return [
             'http' => [
                 'protocol' => 'http',
             ],
+
+            'socket-tcp' => [
+                'protocol' => 'socket',
+                'uri' => 'tcp://0.0.0.0:1314',
+            ],
+
+            'socket-unix' => [
+                'protocol' => 'socket',
+                'uri' => 'unix:/tmp/my.sock',
+            ],
+
+            'swoole-tcp' => [
+                'protocol' => 'swoole',
+                'uri' => 'tcp://0.0.0.0:1314',
+            ],
+
+            'swoole-ws' => [
+                'protocol' => 'swoole',
+                'uri' => 'ws://0.0.0.0:8088',
+            ],
         ],
     ],
 

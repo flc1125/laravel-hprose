@@ -3,6 +3,8 @@
 namespace Flc\Laravel\Hprose;
 
 use Hprose\Http\Client as HproseHttpClient;
+use Hprose\Socket\Client as HproseSocketClient;
+use Hprose\Swoole\Client as HproseSwooleClient;
 use InvalidArgumentException;
 
 /**
@@ -117,7 +119,7 @@ class Client
     }
 
     /**
-     * 通过配置创建一个 http 协议连接
+     * 通过配置创建一个 http 客户端连接
      *
      * @param array $config
      *
@@ -126,6 +128,30 @@ class Client
     protected function createHttpProtocol($config)
     {
         return new HproseHttpClient($config['uri'], $config['async']);
+    }
+
+    /**
+     * 通过配置创建一个 socket 客户端连接
+     *
+     * @param array $config
+     *
+     * @return \Hprose\Client
+     */
+    protected function createSocketProtocol($config)
+    {
+        return new HproseSocketClient($config['uri'], $config['async']);
+    }
+
+    /**
+     * 通过配置创建一个 swoole 客户端连接
+     *
+     * @param array $config
+     *
+     * @return \Hprose\Client
+     */
+    protected function createSwooleProtocol($config)
+    {
+        return new HproseSwooleClient($config['uri'], $config['async']);
     }
 
     /**

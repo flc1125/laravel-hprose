@@ -15,12 +15,18 @@ require_once __DIR__.'/../vendor/autoload.php';
 
 $app = array(
     'config' => array(
-        'hprose.client.default'     => 'http',
+        'hprose.client.default'     => 'socket',
         'hprose.client.connections' => array(
             'http' => array(
                 'protocol' => 'http',
+                'uri'      => 'http://localhost/server.php',
+                'async'    => false,
+            ),
+
+            'socket' => array(
+                'protocol' => 'socket',
                 // 'uri'      => 'http://localhost:9001/server.php',
-                'uri'      => 'https://www.dev.591.com.tw/home/tests/hprose-server',
+                'uri'      => 'tcp://0.0.0.0:1314',
                 'async'    => false,
             ),
         ),
@@ -29,4 +35,7 @@ $app = array(
 
 $client = new \Flc\Laravel\Hprose\Client($app);
 
-print_r($client->name('222').PHP_EOL);
+// for ($i = 1; $i <= 10000; $i ++) {
+    print_r($client->name('222').PHP_EOL);
+// }
+

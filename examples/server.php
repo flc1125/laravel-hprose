@@ -19,7 +19,7 @@ class Controller
 
 function bbb($value)
 {
-    return 'bbb:'.$value;
+    return 'bbdddbcdd11c:'.$value;
 }
 
 $router = new Router();
@@ -46,10 +46,25 @@ $router->group(array('prefix' => 'testsbbb'), function ($router) {
 
 $app = array(
     'config' => array(
-        'hprose.server.default'     => 'http',
+        'hprose.server.default'     => 'swoole',
         'hprose.server.connections' => array(
             'http' => array(
                 'protocol' => 'http',
+            ),
+
+            'socket' => array(
+                'protocol' => 'socket',
+                'uri'      => 'tcp://0.0.0.0:1314',
+            ),
+
+            'swoole' => array(
+                'protocol' => 'swoole',
+                'uri'      => 'tcp://0.0.0.0:1314',
+                'settings' => [
+                    'pid_file' => __DIR__.'/server.pid',
+                    'worker_num' => 4,
+                    'max_request' => 100,
+                ]
             ),
         ),
     ),

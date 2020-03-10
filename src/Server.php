@@ -3,7 +3,9 @@
 namespace Flc\Laravel\Hprose;
 
 use Flc\Laravel\Hprose\Routing\Router;
-use Hprose\Http\Server as HproseHttpServer;
+use Flc\Laravel\Hprose\Server\HttpServer;
+use Flc\Laravel\Hprose\Server\SocketServer;
+use Flc\Laravel\Hprose\Server\SwooleServer;
 use InvalidArgumentException;
 
 /**
@@ -92,7 +94,7 @@ class Server
      *
      * @param string $name
      *
-     * @return ElastisearchClient
+     * @return \Flc\Laravel\Hprose\Server\InterfaceServer
      */
     protected function resolve($name)
     {
@@ -112,6 +114,42 @@ class Server
     }
 
     /**
+     * 通过配置创建一个 http 协议连接
+     *
+     * @param array $config
+     *
+     * @return \Flc\Laravel\Hprose\Server\HttpServer
+     */
+    protected function createHttpProtocol($config)
+    {
+        return new HttpServer($config);
+    }
+
+    /**
+     * 通过配置创建一个 socket 协议连接
+     *
+     * @param array $config
+     *
+     * @return \Flc\Laravel\Hprose\Server\SocketServer
+     */
+    protected function createSocketProtocol($config)
+    {
+        return new SocketServer($config);
+    }
+
+    /**
+     * 通过配置创建一个 swoole 协议连接
+     *
+     * @param array $config
+     *
+     * @return \Flc\Laravel\Hprose\Server\SwooleServer
+     */
+    protected function createSwooleProtocol($config)
+    {
+        return new SwooleServer($config);
+    }
+
+    /**
      * 获取配置
      *
      * @param string $name 配置别名
@@ -127,30 +165,6 @@ class Server
         }
 
         return $connections[$name];
-    }
-
-    /**
-     * 通过配置创建一个 http 协议连接
-     *
-     * @param array $config
-     *
-     * @return \Hprose\Client
-     */
-    protected function createHttpProtocol($config)
-    {
-        return $this->servant(new HproseHttpServer());
-    }
-
-    /**
-     * 通过服务返回服务者
-     *
-     * @param \Hprose\Service $server
-     *
-     * @return Servant
-     */
-    protected function servant($server)
-    {
-        return new Servant($server);
     }
 
     /**
