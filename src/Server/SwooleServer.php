@@ -2,7 +2,7 @@
 
 namespace Flc\Laravel\Hprose\Server;
 
-use Flc\Laravel\Hprose\Traits\SwooleTrait;
+use Flc\Laravel\Hprose\Routing\Router;
 use Hprose\Swoole\Server as HproseSwooleServer;
 
 /**
@@ -12,8 +12,6 @@ use Hprose\Swoole\Server as HproseSwooleServer;
  */
 class SwooleServer extends AbstractServer implements InterfaceServer
 {
-    use SwooleTrait;
-
     /**
      * 创建一个服务
      *
@@ -29,83 +27,25 @@ class SwooleServer extends AbstractServer implements InterfaceServer
      *
      * @return void
      */
-    public function start()
+    public function start(Router $router)
     {
-        if (is_array($this->config['settings'])) {
-            $this->server->set($this->config['settings']);
-        }
-
-        $this->server->on('start', array($this, 'onStart'));
-        $this->server->on('ManagerStart', array($this, 'onManagerStart'));
-        $this->server->on('WorkerStart', array($this, 'onWorkerStart'));
+        $this->addSettings();
+        $this->addFunctions($router);
 
         $this->server->start();
     }
 
     /**
-     * 重载服务
+     * 追加配置
      *
      * @return void
      */
-    public function reload()
+    protected function addSettings()
     {
-        $this->server->reload();
-    }
+        if (! is_array($this->config['settings'])) {
+            return;
+        }
 
-    /**
-     * 停止服务
-     *
-     * @return void
-     */
-    public function stop()
-    {
-
-    }
-
-    /**
-     * 重启服务
-     *
-     * @return void
-     */
-    public function restart()
-    {
-        $this->stop();
-        $this->start();
-    }
-
-    /**
-     * 启动主进程（master）的回调函数
-     *
-     * @return mixed
-     */
-    public function onStart($serv)
-    {
-        $this->setProcessTitle('master:'.$serv->master_pid);
-    }
-
-    /**
-     * 启动 manager 进程的回调函数
-     *
-     * @param  \Swoole\Server $serv
-     * @return mixed
-     */
-    public function onManagerStart($serv)
-    {
-        $this->setProcessTitle('manager:'.$serv->manager_pid);
-    }
-
-    /**
-     * 启动 worker 进程的回调函数
-     *
-     * @param  \Swoole\Server $serv
-     * @return mixed
-     */
-    public function onWorkerStart($serv)
-    {
-        $this->setRouter($this->router);
-        $this->addFunctions();
-        $this->setProcessTitle('worker:'.$serv->worker_pid);
-
-        print_r($this->router);
+        $this->server->set($this->config['settings']);
     }
 }

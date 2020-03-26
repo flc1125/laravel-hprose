@@ -3,7 +3,6 @@
 namespace Flc\Laravel\Hprose\Server;
 
 use Flc\Laravel\Hprose\Routing\Router;
-use Hprose\Http\Server as HproseHttpServer;
 use InvalidArgumentException;
 
 /**
@@ -28,22 +27,13 @@ abstract class AbstractServer implements InterfaceServer
     protected $server;
 
     /**
-     * 路由集合
-     *
-     * @var \Flc\Laravel\Hprose\Routing\Router
-     */
-    protected $router;
-
-    /**
      * 创建一个服务
      *
-     * @param array                                  $config
-     * @param Flc\Laravel\Hprose\Routing\Router|null $router
+     * @param array $config
      */
-    public function __construct($config = array(), Router $router = null)
+    public function __construct($config = array())
     {
         $this->config = $config;
-        $this->router = $router;
         $this->server = $this->createServer();
     }
 
@@ -54,21 +44,7 @@ abstract class AbstractServer implements InterfaceServer
      */
     protected function createServer()
     {
-        throw new InvalidArgumentException("This [createServer] method is not supported.");
-    }
-
-    /**
-     * 设置路由
-     *
-     * @param \Flc\Laravel\Hprose\Routing\Router $router
-     *
-     * @return $this
-     */
-    public function setRouter(Router $router)
-    {
-        $this->router = $router;
-
-        return $this;
+        throw new InvalidArgumentException('This [createServer] method is not supported.');
     }
 
     /**
@@ -76,21 +52,19 @@ abstract class AbstractServer implements InterfaceServer
      *
      * @return void
      */
-    public function start()
+    public function start(Router $router)
     {
-        $this->addFunctions();
+        $this->addFunctions($router);
 
         $this->server->start();
     }
 
     /**
      * 加入方法
-     *
-     * @return $this->
      */
-    protected function addFunctions()
+    protected function addFunctions(Router $router)
     {
-        foreach ($this->router->getRoutes() as $route) {
+        foreach ($router->getRoutes() as $route) {
             $this->server->addFunction($route->getCallback(), $route->getName(), $route->getOptions());
         }
     }
